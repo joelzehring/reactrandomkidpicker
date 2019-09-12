@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Random Kid Picker</title>
+  <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+
+  <style>
+    
+    *, html, body {
+      font-family: sans-serif;
+    }
+    
+    button {
+      border: none;
+      color: white;
+      background-color: rgb(0, 96, 185);
+      padding: 1em;
+      border-radius: .3em;
+      font-size: 2em;
+      width: 90vw;
+    }
+
+    button:active {
+      background-color: rgb(85, 142, 196);
+    }
+    
+    .kidscore {
+      display: inline-block;
+      border: 1px solid black;
+      border-radius: .5em;
+      padding: 1em;
+      margin: 1em;
+    }
+    
+    .winner {
+      font-weight: 600;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="root"></div>
+  
+  <script type="text/babel">
+  
+    {/* App.js */}
+
+    class App extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          kids: ["Nathan", "Zachary"],
+          history: []
+        };
+
+        this.handleClick = this.handleClick.bind(this);
+      }
+
+      handleClick() {
+        const winner = this.state.kids[Math.floor(Math.random() * this.state.kids.length)];
+        this.setState({ history: [...this.state.history, winner] });
+      }
+
+      render() {
+        const winner = this.state.history[this.state.history.length - 1]
+        if (this.state.history.length === 0) {
+          return (
+            <div>
+              <KidScore kidData={this.state}/>
+              <p>Press the button to...</p>
+              <button onClick={this.handleClick}>
+                Pick a kid!
+              </button>
+            </div>
+          );
+        } else {
+          return (
+            <div>
+              <KidScore kidData={this.state}/>
+              <p>You picked <span className="winner">{winner}</span>!</p>
+              <button onClick={this.handleClick}>
+                Pick a kid!
+              </button>
+            </div>
+          );
+        }
+      }
+    }
+    
+    class ScoreBoard extends React.Component {
+      constructor(props) {
+        super(props)
+      }
+      
+      render() {
+        return (
+          <div className="scoreboard">
+            <KidScore kidData={this.props}/>
+          </div>
+        );
+      }
+    }
+    
+    class KidScore extends React.Component {
+      constructor(props) {
+        super(props)
+      }
+    
+      render () {
+        const {kidData} = this.props;
+        
+        return (
+          <div className="container">
+          <div className="kidscore">
+            <h2>{kidData.kids[0]}</h2>
+            <h3>{kidData.history.filter(s => s == "Nathan").length}</h3>
+          </div>
+          <div className="kidscore">
+            <h2>{kidData.kids[1]}</h2>
+            <h3>{kidData.history.filter(s => s == "Zachary").length}</h3>
+          </div>
+          </div>
+        );
+      }
+    }
+
+    ReactDOM.render(
+      <App />,
+      document.getElementById("root")
+      );
+    
+  </script>
+</body>
