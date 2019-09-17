@@ -11,6 +11,8 @@
     
     *, html, body {
       font-family: sans-serif;
+      margin: 0;
+      padding: 0;
     }
     
     button {
@@ -21,6 +23,7 @@
       border-radius: .3em;
       font-size: 2em;
       width: 90vw;
+      margin: .5em;
     }
 
     button:active {
@@ -97,9 +100,11 @@
       }
       
       render() {
+        const {kidData} = this.props;
+
         return (
           <div className="scoreboard">
-            <KidScore kidData={this.props}/>
+            <KidScore kidData={ kidData }/>
           </div>
         );
       }
@@ -109,24 +114,41 @@
       constructor(props) {
         super(props)
       }
-    
+    /* Loop over the kids array to render a display of the score for each kid */
       render () {
-        const {kidData} = this.props;
-        
+        const {kidData} = this.props; 
+          return (
+            <div className="scoreboard">
+              {kidData.kids.map((value, index) => {
+                return (
+                <div className="kidscore">
+                  <h2>{value}</h2>
+                  <h3>{kidData.history.filter(s => s == value).length}</h3>
+                </div> )
+              })}
+            </div>
+          );
+        };
+      }
+      
+      /*
+      render () {
+        const kidData = this.props;
+
         return (
           <div className="container">
-          <div className="kidscore">
-            <h2>{kidData.kids[0]}</h2>
-            <h3>{kidData.history.filter(s => s == "Nathan").length}</h3>
-          </div>
-          <div className="kidscore">
-            <h2>{kidData.kids[1]}</h2>
-            <h3>{kidData.history.filter(s => s == "Zachary").length}</h3>
-          </div>
+            <div className="kidscore">
+              <h2>{kidData.kids[0]}</h2>
+              <h3>{kidData.history.filter(s => s == "Nathan").length}</h3>
+            </div>
+            <div className="kidscore">
+              <h2>{kidData.kids[1]}</h2>
+              <h3>{kidData.history.filter(s => s == "Zachary").length}</h3>
+            </div>
           </div>
         );
       }
-    }
+      */
 
     ReactDOM.render(
       <App />,
